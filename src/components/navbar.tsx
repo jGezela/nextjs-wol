@@ -47,7 +47,7 @@ export default function Navbar() {
               className={clsx(
                 "w-14 h-14 flex justify-center items-center rounded-full transition-colors text-white hover:bg-white hover:text-[#222222] focus:bg-white focus:text-[#222222] focus:outline-0",
                 {
-                  "text-[#222222] bg-white": pathname === item.href
+                  "!text-[#222222] bg-white hover:bg-neutral-200 focus:bg-neutral-200": pathname === item.href
                 }
               )}
             >

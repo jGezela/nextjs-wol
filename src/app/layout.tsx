@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/navbar";
 
 const geistSans = Geist({
@@ -26,12 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-EN">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased mx-auto p-8 max-w-[1920px] bg-[#F0F0F0]`}
-      >
-        <main className="h-full grid grid-cols-[80px_1fr] grid-rows-1 gap-8">
+      <body className={ `${geistSans.variable} ${geistMono.variable} antialiased bg-[#F0F0F0]` }>
+        <main className="mx-auto p-8 max-w-[1920px] h-full grid grid-cols-[80px_1fr] grid-rows-1 gap-8">
           <Navbar />
           {children}
+          <Toaster />
         </main>
       </body>
     </html>
