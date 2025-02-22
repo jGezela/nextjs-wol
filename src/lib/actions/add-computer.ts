@@ -1,9 +1,13 @@
 "use server"
 
+import "dotenv/config";
 import { 
   z, 
   ZodError,
 } from "zod";
+import { drizzle } from "drizzle-orm/libsql";
+
+import { computersTable } from "@/db/schema";
 
 interface FormFields {
   computerName: string;
@@ -24,6 +28,8 @@ const formSchema = z.object({
 });
 
 export async function addComputerAction(prevState: FormState, formData: FormData): Promise<FormState> {
+  const db = drizzle(process.env.DB_FILE_NAME!);
+
   const computerName = formData.get("computerName") as string;
   const macAddress = formData.get("macAddress") as string;
 
@@ -32,6 +38,12 @@ export async function addComputerAction(prevState: FormState, formData: FormData
       computerName,
       macAddress,
     });
+
+    await db.insert(computersTable).values({
+      name: computerName,
+      mac: macAddress,
+    });
+
     return {
       message: "success",
       errors: undefined,
