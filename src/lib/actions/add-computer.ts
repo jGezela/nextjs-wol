@@ -53,17 +53,28 @@ export async function addComputerAction(prevState: FormState, formData: FormData
       }
     };
   } catch (error) {
-    const zodError = error as ZodError;
-    const errorMap = zodError.flatten().fieldErrors;
-    return {
-      message: "error",
-      errors: {
-        computerName: errorMap["computerName"]?.[0] ?? "", 
-        macAddress: errorMap["macAddress"]?.[0] ?? "",
-      },
-      fieldValues: {
-        computerName,
-        macAddress,
+    if(error instanceof ZodError) {
+      const zodError = error;
+      const errorMap = zodError.flatten().fieldErrors;
+      return {
+        message: "zod-error",
+        errors: {
+          computerName: errorMap["computerName"]?.[0] ?? "", 
+          macAddress: errorMap["macAddress"]?.[0] ?? "",
+        },
+        fieldValues: {
+          computerName,
+          macAddress,
+        }
+      }
+    } else {
+      return {
+        message: "db-error",
+        errors: undefined,
+        fieldValues: {
+          computerName,
+          macAddress,
+        }
       }
     }
   }

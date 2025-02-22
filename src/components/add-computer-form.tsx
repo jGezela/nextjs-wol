@@ -32,8 +32,8 @@ export default function AddComputerForm() {
       case "success":
         toast.success("Computer has been added.");
         break;
-      case "error":
-        toast.error("There was an error.", {
+      case "db-error":
+        toast.error("There was a database error.", {
           classNames: {
             toast: '!bg-destructive !text-white !border-0',
           },
