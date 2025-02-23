@@ -4,11 +4,13 @@ import {
   z, 
   ZodError,
 } from "zod";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/libsql";
 
 import { computersTable } from "@/db/schema";
 
 interface FormFields {
+  computerID: string;
   computerName: string;
   macAddress: string;
 }
@@ -16,39 +18,44 @@ interface FormState {
   message: string;
   errors: Record<keyof FormFields, string> | undefined;
   fieldValues: {
+    computerID: string,
     computerName: string,
     macAddress: string,
   }
 }
 
 const formSchema = z.object({
+  computerID: z.coerce.number(),
   computerName: z.string().min(1).max(50),
   macAddress: z.string().regex(/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/, "Invalid MAC address"),
 });
 
-export async function addComputerAction(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function editComputerAction(prevState: FormState, formData: FormData): Promise<FormState> {
   const db = drizzle(process.env.DB_FILE_NAME!);
 
+  const computerID = formData.get("computerID") as string;
   const computerName = formData.get("computerName") as string;
   const macAddress = formData.get("macAddress") as string;
-
+  
   try {
-    formSchema.parse({
+    const data = formSchema.parse({
+      computerID,
       computerName,
       macAddress,
     });
 
-    await db.insert(computersTable).values({
-      name: computerName,
-      mac: macAddress.toUpperCase(),
-    });
+    await db.update(computersTable).set({
+      name: data.computerName,
+      mac: data.macAddress,
+    }).where(eq(computersTable.id, data.computerID));
 
     return {
       message: "success",
       errors: undefined,
       fieldValues: {
-        computerName: "",
-        macAddress: "",
+        computerID,
+        computerName,
+        macAddress,
       }
     };
   } catch (error) {
@@ -58,10 +65,12 @@ export async function addComputerAction(prevState: FormState, formData: FormData
       return {
         message: "zod-error",
         errors: {
+          computerID: errorMap["computerID"]?.[0] ?? "",
           computerName: errorMap["computerName"]?.[0] ?? "", 
           macAddress: errorMap["macAddress"]?.[0] ?? "",
         },
         fieldValues: {
+          computerID,
           computerName,
           macAddress,
         }
@@ -71,6 +80,7 @@ export async function addComputerAction(prevState: FormState, formData: FormData
         message: "db-error",
         errors: undefined,
         fieldValues: {
+          computerID,
           computerName,
           macAddress,
         }

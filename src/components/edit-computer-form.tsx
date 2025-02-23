@@ -13,27 +13,34 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { addComputerAction } from "@/lib/actions/add-computer";
+import { editComputerAction } from "@/lib/actions/edit-computer";
 
 import { LoaderCircle } from "lucide-react";
 
-export default function AddComputerForm() {
+export default function EditComputerForm({ id, name, mac }: { id: string, name: string, mac: string }) {
   const { mutate } = useSWRConfig();
-
-  const [state, formAction, isPending] = useActionState(addComputerAction, {
+  const [state, formAction, isPending] = useActionState(editComputerAction, {
     message: "",
     errors: undefined,
     fieldValues: {
-      computerName: "",
-      macAddress: "",
+      computerID: id,
+      computerName: name,
+      macAddress: mac,
     }
   });
 
   useEffect(() => {
     switch (state.message) {
       case "success":
-        toast.success("Computer has been added.");
+        toast.success("Computer has been edited.");
         mutate("getComputers");
+        break;
+      case "zod-error":
+        toast.error("There was a data error.", {
+          classNames: {
+            toast: '!bg-destructive !text-white !border-0',
+          },
+        });
         break;
       case "db-error":
         toast.error("There was a database error.", {
@@ -47,7 +54,7 @@ export default function AddComputerForm() {
 
   return (
     <Form action={formAction} className="space-y-3">
-      <div className="space-y-1">
+      <div className="!mt-0 space-y-1">
         <Label 
           htmlFor="computerName"
         >Name</Label>
@@ -88,9 +95,16 @@ export default function AddComputerForm() {
           <span id="macAddressError" className="block pt-1 text-sm text-destructive">{ state.errors.macAddress }</span>
         )}
       </div>
+      
+      <Input 
+        id="computerID"
+        name="computerID"
+        type="hidden"
+        defaultValue={state.fieldValues.computerID}
+      />
 
       <div className="pt-2 flex justify-end">
-        { isPending ? <Button disabled><LoaderCircle className="animate-spin" /></Button> : <Button>Add computer</Button> }
+        { isPending ? <Button disabled><LoaderCircle className="animate-spin" /></Button> : <Button>Edit computer</Button> }
       </div>
     </Form>
   );

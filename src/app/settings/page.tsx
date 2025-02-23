@@ -7,6 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import ComputersTable from "@/components/computers-table";
 import AddComputerForm from "@/components/add-computer-form";
 
 import { Plus } from "lucide-react";
@@ -34,7 +35,7 @@ export default function Page() {
             </DialogContent>
           </Dialog>
         </header>
-
+        <ComputersTable />
       </section>
     </section>
   );
