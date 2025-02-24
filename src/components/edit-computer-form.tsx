@@ -51,7 +51,7 @@ export default function EditComputerForm({ id, name, ip, mac }: { id: string, na
         });
         break;
     }
-  }, [state]);
+  }, [state, mutate]);
 
   return (
     <Form action={formAction} className="space-y-3">

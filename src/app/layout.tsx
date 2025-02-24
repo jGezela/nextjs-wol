@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en-EN">
       <body className={ `${geistSans.variable} ${geistMono.variable} antialiased bg-[#F0F0F0]` }>
-        <main className="mx-auto p-8 max-w-[1920px] h-full grid grid-cols-[80px_1fr] grid-rows-1 gap-8">
+        <main className="mx-auto p-4 sm:p-8 max-w-[1920px] h-full grid grid-cols-1 sm:grid-cols-[80px_1fr] grid-rows-[80px_1fr] sm:grid-rows-1">
           <Navbar />
           {children}
           <Toaster />

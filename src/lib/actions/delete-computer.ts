@@ -10,7 +10,7 @@ export interface deleteComputerState {
   errors: string | undefined;
 }
 
-export default async function deleteComputer(id: number):Promise<deleteComputerState> {
+export default async function deleteComputer(id: number): Promise<deleteComputerState> {
   const db = drizzle(process.env.DB_FILE_NAME!);
 
   try {
@@ -20,7 +20,7 @@ export default async function deleteComputer(id: number):Promise<deleteComputerS
       message: "success",
       errors: undefined,
     }
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       message: "db-error",
       errors: String(error),

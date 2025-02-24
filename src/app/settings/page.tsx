@@ -14,7 +14,7 @@ import { Plus } from "lucide-react";
 
 export default function Page() {
   return (
-    <section>
+    <section className="mt-4 sm:mt-0 sm:ps-8 px-2 sm:pr-4 pb-1 overflow-auto">
       <h1 className="mb-4 text-2xl font-bold">Settings</h1>
       <section>
         <header className="flex justify-between items-center">

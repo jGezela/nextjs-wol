@@ -44,7 +44,7 @@ export default function AddComputerForm() {
         });
         break;
     }
-  }, [state]);
+  }, [state, mutate]);
 
   return (
     <Form action={formAction} className="space-y-3">

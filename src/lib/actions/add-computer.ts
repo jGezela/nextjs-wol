@@ -58,7 +58,7 @@ export async function addComputerAction(prevState: FormState, formData: FormData
         macAddress: "",
       }
     };
-  } catch (error) {
+  } catch (error: unknown) {
     if(error instanceof ZodError) {
       const zodError = error;
       const errorMap = zodError.flatten().fieldErrors;

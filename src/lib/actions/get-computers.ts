@@ -22,7 +22,7 @@ export async function getComputers(): Promise<getComputersState> {
       errors: undefined,
       computers,
     }
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       message: "db-error",
       errors: String(error),

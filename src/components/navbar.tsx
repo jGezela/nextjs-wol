@@ -32,8 +32,8 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="py-4 w-20 h-full bg-[#222222] rounded-2xl flex flex-col items-center gap-3">
-      <div className="mb-4">
+    <nav className="py-4 sm:w-20 sm:h-full bg-[#222222] rounded-2xl flex sm:flex-col items-center gap-3">
+      <div className="mx-4 sm:mb-4">
         <CirclePower color="#FFFFFF" size={38} className="-rotate-12"/>
         <p className="mt-1 text-white text-center font-bold">WoL</p>
       </div>

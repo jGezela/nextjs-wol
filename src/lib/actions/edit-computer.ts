@@ -51,6 +51,7 @@ export async function editComputerAction(prevState: FormState, formData: FormDat
 
     await db.update(computersTable).set({
       name: data.computerName,
+      ip: data.ipAddress,
       mac: data.macAddress,
     }).where(eq(computersTable.id, data.computerID));
 
@@ -64,7 +65,7 @@ export async function editComputerAction(prevState: FormState, formData: FormDat
         macAddress,
       }
     };
-  } catch (error) {
+  } catch (error: unknown) {
     if(error instanceof ZodError) {
       const zodError = error;
       const errorMap = zodError.flatten().fieldErrors;
