@@ -17,7 +17,7 @@ import { editComputerAction } from "@/lib/actions/edit-computer";
 
 import { LoaderCircle } from "lucide-react";
 
-export default function EditComputerForm({ id, name, mac }: { id: string, name: string, mac: string }) {
+export default function EditComputerForm({ id, name, ip, mac }: { id: string, name: string, ip: string, mac: string }) {
   const { mutate } = useSWRConfig();
   const [state, formAction, isPending] = useActionState(editComputerAction, {
     message: "",
@@ -25,6 +25,7 @@ export default function EditComputerForm({ id, name, mac }: { id: string, name: 
     fieldValues: {
       computerID: id,
       computerName: name,
+      ipAddress: ip,
       macAddress: mac,
     }
   });
@@ -72,7 +73,29 @@ export default function EditComputerForm({ id, name, mac }: { id: string, name: 
           })}
         />
         { state.errors?.computerName && (
-          <p id="computerNameError" className="text-destructive">{ state.errors.computerName }</p>
+          <span id="computerNameError" className="block pt-1 text-sm text-destructive">{ state.errors.computerName }</span>
+        )}
+      </div>
+
+      <div className="space-y-1">
+        <Label 
+          htmlFor="ipAddress"
+        >IP address</Label>
+        <Input 
+          id="ipAddress"
+          name="ipAddress"
+          placeholder="192.168.1.100"
+          defaultValue={state.fieldValues.ipAddress}
+          aria-describedby="ipAddressError"
+          minLength={7}
+          maxLength={15}
+          required
+          className={clsx({
+            "border-destructive": state.errors?.ipAddress
+          })}
+        />
+        { state.errors?.ipAddress && (
+          <span id="ipAddressError" className="block pt-1 text-sm text-destructive">{ state.errors.ipAddress }</span>
         )}
       </div>
       

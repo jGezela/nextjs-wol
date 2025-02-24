@@ -12,6 +12,7 @@ import { computersTable } from "@/db/schema";
 interface FormFields {
   computerID: string;
   computerName: string;
+  ipAddress: string;
   macAddress: string;
 }
 interface FormState {
@@ -20,6 +21,7 @@ interface FormState {
   fieldValues: {
     computerID: string,
     computerName: string,
+    ipAddress: string,
     macAddress: string,
   }
 }
@@ -27,6 +29,7 @@ interface FormState {
 const formSchema = z.object({
   computerID: z.coerce.number(),
   computerName: z.string().min(1).max(50),
+  ipAddress: z.string().ip({ message: "Invalid IP address" }),
   macAddress: z.string().regex(/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/, "Invalid MAC address"),
 });
 
@@ -35,12 +38,14 @@ export async function editComputerAction(prevState: FormState, formData: FormDat
 
   const computerID = formData.get("computerID") as string;
   const computerName = formData.get("computerName") as string;
+  const ipAddress = formData.get("ipAddress") as string;
   const macAddress = formData.get("macAddress") as string;
   
   try {
     const data = formSchema.parse({
       computerID,
       computerName,
+      ipAddress,
       macAddress,
     });
 
@@ -55,6 +60,7 @@ export async function editComputerAction(prevState: FormState, formData: FormDat
       fieldValues: {
         computerID,
         computerName,
+        ipAddress,
         macAddress,
       }
     };
@@ -67,11 +73,13 @@ export async function editComputerAction(prevState: FormState, formData: FormDat
         errors: {
           computerID: errorMap["computerID"]?.[0] ?? "",
           computerName: errorMap["computerName"]?.[0] ?? "", 
+          ipAddress: errorMap["ipAddress"]?.[0] ?? "",
           macAddress: errorMap["macAddress"]?.[0] ?? "",
         },
         fieldValues: {
           computerID,
           computerName,
+          ipAddress,
           macAddress,
         }
       }
@@ -82,6 +90,7 @@ export async function editComputerAction(prevState: FormState, formData: FormDat
         fieldValues: {
           computerID,
           computerName,
+          ipAddress,
           macAddress,
         }
       }

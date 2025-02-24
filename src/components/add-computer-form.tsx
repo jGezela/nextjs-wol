@@ -25,6 +25,7 @@ export default function AddComputerForm() {
     errors: undefined,
     fieldValues: {
       computerName: "",
+      ipAddress: "",
       macAddress: "",
     }
   });
@@ -65,7 +66,29 @@ export default function AddComputerForm() {
           })}
         />
         { state.errors?.computerName && (
-          <p id="computerNameError" className="text-destructive">{ state.errors.computerName }</p>
+          <span id="computerNameError" className="block pt-1 text-sm text-destructive">{ state.errors.computerName }</span>
+        )}
+      </div>
+
+      <div className="space-y-1">
+        <Label 
+          htmlFor="ipAddress"
+        >IP address</Label>
+        <Input 
+          id="ipAddress"
+          name="ipAddress"
+          placeholder="192.168.1.100"
+          defaultValue={state.fieldValues.ipAddress}
+          aria-describedby="ipAddressError"
+          minLength={7}
+          maxLength={15}
+          required
+          className={clsx({
+            "border-destructive": state.errors?.ipAddress
+          })}
+        />
+        { state.errors?.ipAddress && (
+          <span id="ipAddressError" className="block pt-1 text-sm text-destructive">{ state.errors.ipAddress }</span>
         )}
       </div>
       

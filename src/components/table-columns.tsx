@@ -59,6 +59,10 @@ export const computerColumns: ColumnDef<Computer>[] = [
     header: "Name",
   },
   {
+    accessorKey: "ip",
+    header: "IP address",
+  },
+  {
     accessorKey: "mac",
     header: "MAC address",
   },
@@ -103,7 +107,7 @@ export const computerColumns: ColumnDef<Computer>[] = [
                   Change computer details.
                 </DialogDescription>
               </DialogHeader>
-              <EditComputerForm id={String(computer.id)} name={computer.name} mac={computer.mac} />
+              <EditComputerForm id={String(computer.id)} name={computer.name} ip={computer.ip} mac={computer.mac} />
             </DialogContent>
           </Dialog>
         </div>
