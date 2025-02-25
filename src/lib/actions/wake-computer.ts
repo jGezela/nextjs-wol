@@ -31,7 +31,7 @@ export default async function wakeComputer(ip: string, mac: string): Promise<wak
             details: "Wake-on-LAN signal sent, but computer is not responding."
           });
         }
-      }, 5000);
+      }, 30000);
     });
   });
 }

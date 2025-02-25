@@ -13,17 +13,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 
 import { Computer } from "@/lib/types";
 import wakeComputer from "@/lib/actions/wake-computer";
 import shutdownComputer from "@/lib/actions/shutdown-computer";
 
-import { LoaderCircle } from "lucide-react";
+import { 
+  LoaderCircle, 
+  Power, 
+} from "lucide-react";
 
 export default function ComputerCard({ computer, isAlive }: { computer: Computer, isAlive: boolean }) {
   const [isChecked, setIsChecked] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const checkIsAlive = useCallback(async () => {
     setIsPending(true);
@@ -32,9 +44,8 @@ export default function ComputerCard({ computer, isAlive }: { computer: Computer
   }, [isAlive]);
 
   const handleSwitch = async () => {
-    setIsChecked(prevState => !prevState);
-
     if(!isChecked) {
+      setIsChecked(prevState => !prevState);
       setIsPending(true);
       await wakeComputer(computer.ip, computer.mac)
         .then((response) => {
@@ -47,18 +58,24 @@ export default function ComputerCard({ computer, isAlive }: { computer: Computer
         });
       setIsPending(false);
     } else {
-      setIsPending(true);
-      await shutdownComputer(computer.ip)
-        .then((response) => {
-          if(response.message === "shutdown-error") {
-            toast.error(response.details, {classNames: {toast: '!bg-destructive !text-white !border-0',}});
-            setIsChecked(true);
-          } else {
-            toast.success(response.details);
-          }
-        });
-      setIsPending(false);
+      setIsDialogOpen(true);
     }
+  }
+
+  const handleShutdown = async () => {
+    setIsDialogOpen(false);
+    setIsPending(true);
+    await shutdownComputer(computer.ip)
+      .then((response) => {
+        if(response.message === "shutdown-error") {
+          toast.error(response.details, {classNames: {toast: '!bg-destructive !text-white !border-0',}});
+          setIsChecked(true);
+        } else {
+          toast.success(response.details);
+          setIsChecked(false);
+        }
+      });
+    setIsPending(false);
   }
 
   useEffect(() => {
@@ -84,6 +101,23 @@ export default function ComputerCard({ computer, isAlive }: { computer: Computer
           />
         }
       </CardHeader>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogDescription>
+              Are you sure, you want to delete this computer?
+            </DialogDescription>
+          </DialogHeader>
+          <Button 
+            className="bg-destructive hover:bg-red-600"
+            onClick={() => handleShutdown()}
+          >
+            <Power />Shutdown computer
+          </Button>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

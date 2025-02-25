@@ -56,7 +56,7 @@ export default function ComputersTableActions({ computer }: { computer: Computer
   }
   return (
     <div className="flex justify-end">
-      <Dialog>
+      
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -67,30 +67,48 @@ export default function ComputersTableActions({ computer }: { computer: Computer
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DialogTrigger asChild>
-              <DropdownMenuItem className="cursor-pointer">
-                <Pencil />Edit computer
-              </DropdownMenuItem>
-            </DialogTrigger>
-            <DropdownMenuItem
-              onClick={() => handleDelete(computer.id, mutate)}
-              className="text-destructive hover:!text-destructive cursor-pointer"
-            >
-              <Trash2 />Delete computer
-            </DropdownMenuItem>
+            <Dialog>
+              <DialogTrigger asChild>
+                <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>
+                  <Pencil />Edit computer
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Edit computer</DialogTitle>
+                <DialogDescription>
+                  Change computer details.
+                </DialogDescription>
+              </DialogHeader>
+              <EditComputerForm id={String(computer.id)} name={computer.name} ip={computer.ip} mac={computer.mac} />
+              </DialogContent>
+            </Dialog>
+            <Dialog>
+              <DialogTrigger asChild>
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="text-destructive hover:!text-destructive cursor-pointer"
+                >
+                  <Trash2 />Delete computer
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogDescription>
+                  Are you sure, you want to delete this computer?
+                </DialogDescription>
+              </DialogHeader>
+              <Button 
+                onClick={() => handleDelete(computer.id, mutate)} 
+                className="bg-destructive hover:bg-red-600"
+              >
+                <Trash2 />Delete computer
+              </Button>
+              </DialogContent>
+            </Dialog>
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit computer</DialogTitle>
-            <DialogDescription>
-              Change computer details.
-            </DialogDescription>
-          </DialogHeader>
-          <EditComputerForm id={String(computer.id)} name={computer.name} ip={computer.ip} mac={computer.mac} />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

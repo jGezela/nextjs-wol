@@ -73,7 +73,7 @@ export default function ComputersCards() {
           </div> :
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             { data?.computers.length === 0 ?
-              <p>No computers. Go to settings and add new computer.</p> :
+              <p className="col-start-1 col-end-4">No computers. Go to settings and add new computer.</p> :
               data?.computers.map( computer => (
                 <ComputerCard key={computer.id} computer={computer} 
                 isAlive={computersStatus.find( item => computer.id===item.id)?.isAlive ?? false} />
