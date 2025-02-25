@@ -107,7 +107,7 @@ export default function ComputerCard({ computer, isAlive }: { computer: Computer
           <DialogHeader>
             <DialogTitle>Are you sure?</DialogTitle>
             <DialogDescription>
-              Are you sure, you want to delete this computer?
+              Are you sure, you want to shutdown this computer?
             </DialogDescription>
           </DialogHeader>
           <Button 
