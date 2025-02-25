@@ -11,7 +11,7 @@ export interface getComputersState {
   computers: Computer[];
 }
 
-export async function getComputers(): Promise<getComputersState> {
+export default async function getComputers(): Promise<getComputersState> {
   const db = drizzle(process.env.DB_FILE_NAME!);
 
   try {

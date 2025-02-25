@@ -6,7 +6,8 @@ import { useEffect } from "react";
 
 import { DataTable } from "@/components/ui/data-table";
 import { computerColumns } from "@/components/table-columns";
-import { getComputers } from "@/lib/actions/get-computers";
+
+import getComputers from "@/lib/actions/get-computers";
 
 import { LoaderCircle } from "lucide-react";
 

@@ -33,7 +33,7 @@ const formSchema = z.object({
   macAddress: z.string().regex(/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/, "Invalid MAC address"),
 });
 
-export async function editComputerAction(prevState: FormState, formData: FormData): Promise<FormState> {
+export default async function editComputerAction(prevState: FormState, formData: FormData): Promise<FormState> {
   const db = drizzle(process.env.DB_FILE_NAME!);
 
   const computerID = formData.get("computerID") as string;

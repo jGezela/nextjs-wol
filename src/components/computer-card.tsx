@@ -1,7 +1,9 @@
 "use client"
 
 import { 
-  useState,
+  useState, 
+  useEffect,
+  useCallback,
 } from "react";
 import { toast } from "sonner";
 
@@ -14,22 +16,20 @@ import {
 import { Switch } from "@/components/ui/switch";
 
 import { Computer } from "@/lib/types";
-//import pingComputer from "@/lib/actions/ping-computer";
 import wakeComputer from "@/lib/actions/wake-computer";
 import shutdownComputer from "@/lib/actions/shutdown-computer";
 
 import { LoaderCircle } from "lucide-react";
 
-export default function ComputerCard({ computer }: { computer: Computer }) {
+export default function ComputerCard({ computer, isAlive }: { computer: Computer, isAlive: boolean }) {
   const [isChecked, setIsChecked] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  // const checkIsAlive = async () => {
-  //   setIsPending(true);
-  //   const isAlive = await pingComputer(computer.ip).then(res => res.alive);
-  //   setIsChecked(isAlive);
-  //   setIsPending(false);
-  // }
+  const checkIsAlive = useCallback(async () => {
+    setIsPending(true);
+    setIsChecked(isAlive);
+    setIsPending(false);
+  }, [isAlive]);
 
   const handleSwitch = async () => {
     setIsChecked(prevState => !prevState);
@@ -60,20 +60,10 @@ export default function ComputerCard({ computer }: { computer: Computer }) {
       setIsPending(false);
     }
   }
-  
-  // useEffect(() => {
-  //   checkIsAlive();
-  // }, []);
 
-  // useEffect(() => {
-  //   const pingInterval = setInterval(() => {
-  //     checkIsAlive();
-  //   }, 60000);
-
-  //   return () => {
-  //     clearInterval(pingInterval);
-  //   };
-  // });
+  useEffect(() => {
+    checkIsAlive();
+  }, [isAlive, checkIsAlive]);
 
   return (
     <Card>
