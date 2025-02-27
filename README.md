@@ -30,7 +30,7 @@ npm run dev
 To build and start the application in production mode:
 ```sh
 npm run build
-npm start
+npm run start
 ```
 
 No additional configuration is required to run the application.
